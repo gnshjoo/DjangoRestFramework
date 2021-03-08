@@ -1,0 +1,7 @@
+# created by virtualenv automatically
+bin
+.vscode
+.Python
+pyvenv.cfg
+lib
+.idea
