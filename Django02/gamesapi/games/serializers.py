@@ -1,4 +1,4 @@
-from rest_framewrok import serializers
+from rest_framework import serializers
 from games.models import GameCategory
 from games.models import Game
 from games.models import Player
@@ -21,14 +21,15 @@ class GameCategorySerializer(serializers.HyperlinkedModelSerializer):
             'games',
         )
 
-class GameSeializer(serializers.HyperlinkedModelSerializer):
+
+class GameSerializer(serializers.HyperlinkedModelSerializer):
     game_category = serializers.SlugRelatedField(
         queryset=GameCategory.objects.all(), slug_field='name'
     )
 
     class Meta:
         model = Game
-        field = (
+        fields = (
             'url',
             'game_category',
             'name',
@@ -36,8 +37,9 @@ class GameSeializer(serializers.HyperlinkedModelSerializer):
             'played'
         )
 
+
 class ScoreSerializer(serializers.HyperlinkedModelSerializer):
-    game = GameSeializer()
+    game = GameSerializer()
 
     class Meta:
         model = PlayerScore
@@ -49,13 +51,13 @@ class ScoreSerializer(serializers.HyperlinkedModelSerializer):
             'game',
         )
 
-class PlayerSerializer(serializers.HyperlinkedModelSerializer):
 
+class PlayerSerializer(serializers.HyperlinkedModelSerializer):
     scores = ScoreSerializer(many=True, read_only=True)
     gender = serializers.ChoiceField(
-        choice=Player.GENDER_CHOICES
+        choices=Player.GENDER_CHOICES,
     )
-    gender_description = serializers.ChoiceField(
+    gender_description = serializers.CharField(
         source='get_gender_display',
         read_only=True
     )
@@ -69,6 +71,7 @@ class PlayerSerializer(serializers.HyperlinkedModelSerializer):
             'gender_description',
             'scores',
         )
+
 
 class PlayerScoreSerializer(serializers.ModelSerializer):
     player = serializers.SlugRelatedField(queryset=Player.objects.all(), slug_field='name')

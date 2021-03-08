@@ -27,15 +27,15 @@ class Game(models.Model):
 class Player(models.Model):
     MALE = 'M'
     FEMALE = 'F'
-    GENDER_CHOICE =(
+    GENDER_CHOICES =(
         (MALE, 'Male'),
-        (FEMALE, 'Female')
+        (FEMALE, 'Female'),
     )
     created = models.DateTimeField(auto_now_add=True)
     name = models.CharField(max_length=50, blank=False, default='')
     gender = models.CharField(
         max_length=2,
-        choices=GENDER_CHOICE,
+        choices=GENDER_CHOICES,
         default=MALE,
     )
 
